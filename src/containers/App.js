@@ -1,7 +1,7 @@
 import React, { useRef, useEffect } from "react";
 import { select } from "d3";
 
-import "../App.css";
+import "../css/style.css";
 
 const data = [23, 34, 55, 333, 87];
 
