@@ -1,39 +1,57 @@
-// import { connect } from "react-redux";
-// import { shallowEqual, useSelector } from 'react-redux'
-
 import React, { useState, useEffect } from "react";
-// import ReactDOM from "react-dom";
+import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
 import axios from "axios";
 
+import About from "./About"
+import Home from "./Home"
+
 const App = () => {
-  const [page, setPage] = useState(1);
-  const [covidData, setCovidData] = useState(false);
+  const [covidData, setCovidData] = useState(false);  
   const [isLoading, setIsLoading] = useState(true);
 
-  const loadMore = () => {
-    setPage(page + 1);
-  };
 
   useEffect(() => {
     axios
       .get("https://pomber.github.io/covid19/timeseries.json")
-      .then(res => {         
+      .then(res => {
         return res.data;
       })
       .then(data => {
         setIsLoading(false);
-        setCovidData(data);      
-      }).catch(error => console.log(error));
-  }, [page]);
+        setCovidData(data);
+      })
+      .catch(error => {
+        setIsLoading(true);
+        console.log(error);
+      });
+  }, []);
 
   const content = (
     <div className="App">
-      <div>
-        {isLoading && <p>Wait I'm Loading data for you</p>}
-        {console.log(covidData.Ireland)}
-        <button onClick={loadMore}>Load More Commits</button>
-        {/* {covidData && ( Object.keys(covidData).map((i,item)=><p key={i}>{covidData.Ireland.term}</p>))} */}
-      </div>
+      <Router>
+        <div>
+          <nav>
+            <ul>
+              <li>
+                <Link to="/">Home</Link>
+              </li>
+              <li>
+                <Link to="/about">About</Link>
+              </li>
+            
+            </ul>
+          </nav>
+
+          <Switch>
+            <Route path="/about">
+              <About ></About>
+            </Route>
+            <Route exact path="/">
+              <Home data={covidData}></Home>
+            </Route>
+          </Switch>
+        </div>
+      </Router>
     </div>
   );
 
