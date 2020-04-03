@@ -5,6 +5,7 @@
   "dependencies": {
     "axios": "^0.19.0",
     "d3": "^5.15.1",
+    "google-maps-react": "^2.0.2",
     "react": "^16.8.6",
     "react-d3-library": "^1.1.8",
     "react-dom": "^16.8.6",

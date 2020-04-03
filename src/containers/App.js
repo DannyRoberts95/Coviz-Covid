@@ -1,12 +1,20 @@
 import React, { useState, useEffect } from "react";
-import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
+import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import axios from "axios";
 
-import Test from "./Test";
+import Navbar from "../components/Navbar";
 import Home from "./Home";
 
+import "../css/style.css"
+
+import UIkit from "../../node_modules/uikit/dist/js/uikit";
+import Icons from "../../node_modules/uikit/dist/js/uikit-icons";
+UIkit.use(Icons);
+
+
+
 const App = () => {
-  const [covidData, setCovidData] = useState(false);
+  const [covidData, setCovidData] = useState({});
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
@@ -17,6 +25,7 @@ const App = () => {
       })
       .then(data => {
         setIsLoading(false);
+        console.log(data);
         setCovidData(data);
       })
       .catch(error => {
@@ -25,33 +34,27 @@ const App = () => {
       });
   }, []);
 
-  const content = (
-    <div className="App uk-section-muted">
-      <div className="uk-container-expand">
-        <Router>
-          <div>
-            <nav>
-              <ul>
-                <li>
-                  <Link to="/">Home</Link>
-                </li>
-                <li>
-                  <Link to="/test">D3</Link>
-                </li>
-              </ul>
-            </nav>
 
+
+  const content = (
+    <div className="App">
+      <Navbar></Navbar>
+      {isLoading ? (
+        <div className="uk-container-expand uk-background-muted">
+          <div className="uk-position-center " uk-spinner="ratio: 3"></div>
+        </div>
+      ) : (
+        <div className="uk-container uk-background-muted uk-height-1-1">
+          <Router>
+            
             <Switch>
               <Route exact path="/">
                 <Home data={covidData}></Home>
               </Route>
-              <Route path="/test">
-                <Test></Test>
-              </Route>
             </Switch>
-          </div>
-        </Router>
-      </div>
+          </Router>
+        </div>
+      )}
     </div>
   );
 
