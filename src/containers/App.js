@@ -7,7 +7,7 @@ import axios from "axios";
 
 const App = () => {
   const [page, setPage] = useState(1);
-  const [covidData, setCovidData] = useState({});
+  const [covidData, setCovidData] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
 
   const loadMore = () => {
@@ -17,25 +17,21 @@ const App = () => {
   useEffect(() => {
     axios
       .get("https://pomber.github.io/covid19/timeseries.json")
-      .then(res => { 
+      .then(res => {         
         return res.data;
       })
-      .then(res => {
+      .then(data => {
         setIsLoading(false);
-        setCovidData(res);      
-        console.log(covidData);
-      })
-      .catch(error => console.log(error));
+        setCovidData(data);      
+      }).catch(error => console.log(error));
   }, [page]);
 
   const content = (
     <div className="App">
       <div>
-        <h1> API calls with React Hooks </h1>
         {isLoading && <p>Wait I'm Loading data for you</p>}
-
+        {console.log(covidData.Ireland)}
         <button onClick={loadMore}>Load More Commits</button>
-
         {/* {covidData && ( Object.keys(covidData).map((i,item)=><p key={i}>{covidData.Ireland.term}</p>))} */}
       </div>
     </div>
