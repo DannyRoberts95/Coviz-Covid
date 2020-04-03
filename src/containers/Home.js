@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
-import { select } from "d3";
+import { select, line, curveCardinal } from "d3";
 import MySelectPicker from "../components/inputs/select";
 
 const dataFAKE = [23, 34, 55, 333, 87];
@@ -15,27 +15,30 @@ const Home = props => {
 
   useEffect(() => {
     for (let [key, value] of Object.entries(props.data)) {
-      if(key == selectedCountry){ 
-        data = props.data[key].map(item=>item.confirmed);
+      if (key == selectedCountry) {
+        data = props.data[key].map(item => item.confirmed);
         console.log(data);
-
-        }
+      }
     }
 
     // D3 SETUP AND UPDATE
     const svg = select(svgRef.current);
+
+    const myLine = line()
+      .x((value, index) => index*10)
+      .y(value => value/10).curve(curveCardinal);
     svg
-      .selectAll("circle")
-      .data(data)
-      .join("circle")
-      .attr("r", value => value)
-      .attr("cx", value => value * 2)
-      .attr("cy", value => value * 2)
-      .attr("fill", "red");
+      .selectAll("path")
+      .data([data])
+      .join("path")
+      .attr("d", value => myLine(value))
+      .attr("fill", "none")
+      .attr("stroke", "blue");
+  
   }, [selectedCountry]);
 
   const content = (
-    <div>
+    <div className="uk-height-1-1">
       <MySelectPicker
         name="country1"
         options={Object.keys(props.data)}
@@ -43,7 +46,10 @@ const Home = props => {
       ></MySelectPicker>
       <p>SELECTED COUNTRY: {selectedCountry}</p>
 
-      <svg className="uk-width-1-1" ref={svgRef}></svg>
+      <svg id="graph-svg" ref={svgRef}>
+        {" "}
+        <path d=""></path>
+      </svg>
     </div>
   );
 

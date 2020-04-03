@@ -38,15 +38,14 @@ const App = () => {
 
   const content = (
     <div className="App">
-      <Navbar></Navbar>
+      {/* <Navbar></Navbar> */}
       {isLoading ? (
         <div className="uk-container-expand uk-background-muted">
           <div className="uk-position-center " uk-spinner="ratio: 3"></div>
         </div>
       ) : (
-        <div className="uk-container uk-background-muted uk-height-1-1">
-          <Router>
-            
+        <div className="uk-container-expand uk-background-muted uk-height-1-1">
+          <Router> 
             <Switch>
               <Route exact path="/">
                 <Home data={covidData}></Home>
