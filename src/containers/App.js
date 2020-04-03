@@ -1,26 +1,61 @@
-import React, { useRef, useEffect } from "react";
-import { select } from "d3";
+import React, { useState, useEffect } from "react";
+import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
+import axios from "axios";
 
-import "../css/style.css";
-
-const data = [23, 34, 55, 333, 87];
+import Test from "./Test";
+import Home from "./Home";
 
 const App = () => {
-  const svgRef = useRef();
+  const [covidData, setCovidData] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    console.log(svgRef);
-    const svg = select(svgRef.current);
-    svg
-      .selectAll("circle")
-      .data(data)
-      .join("circle")
-      .attr("r", value => value)
-      .attr("cx", value => value * 2)
-      .attr("cy", value => value * 2)
-      .attr("fill", "red");
+    axios
+      .get("https://pomber.github.io/covid19/timeseries.json")
+      .then(res => {
+        return res.data;
+      })
+      .then(data => {
+        setIsLoading(false);
+        setCovidData(data);
+      })
+      .catch(error => {
+        setIsLoading(true);
+        console.log(error);
+      });
   }, []);
-  return <svg ref={svgRef}></svg>;
+
+  const content = (
+    <div className="App uk-section-muted">
+      <div className="uk-container-expand">
+        <Router>
+          <div>
+            <nav>
+              <ul>
+                <li>
+                  <Link to="/">Home</Link>
+                </li>
+                <li>
+                  <Link to="/test">D3</Link>
+                </li>
+              </ul>
+            </nav>
+
+            <Switch>
+              <Route exact path="/">
+                <Home data={covidData}></Home>
+              </Route>
+              <Route path="/test">
+                <Test></Test>
+              </Route>
+            </Switch>
+          </div>
+        </Router>
+      </div>
+    </div>
+  );
+
+  return content;
 };
 
 export default App;
