@@ -5,7 +5,7 @@ import axios from "axios";
 import Navbar from "../components/Navbar";
 import Home from "./Home";
 
-import "../css/style.css"
+import "../sass/style.scss"
 
 import UIkit from "../../node_modules/uikit/dist/js/uikit";
 import Icons from "../../node_modules/uikit/dist/js/uikit-icons";
@@ -40,11 +40,11 @@ const App = () => {
     <div className="App">
       {/* <Navbar></Navbar> */}
       {isLoading ? (
-        <div className="uk-container-expand uk-background-muted">
+        <div className="uk-container-expand">
           <div className="uk-position-center " uk-spinner="ratio: 3"></div>
         </div>
       ) : (
-        <div className="uk-container-expand uk-background-muted uk-height-1-1">
+        <div className="uk-container-expand uk-height-1-1">
           <Router> 
             <Switch>
               <Route exact path="/">

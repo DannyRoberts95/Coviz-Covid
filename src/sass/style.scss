@@ -7,6 +7,10 @@
 
 #graph-svg{
     width: 100%;
-    height:750px;
+    height:900px;
     background-color: #eeefff;
+    position: absolute;
+    top: 0px;
+    bottom: 0px;
+    z-index: -1;
 }
