@@ -9,7 +9,7 @@ import Col from "react-bootstrap/Col";
 import ChartWrapper from "./ChartWrapper";
 
 const App = () => {
-  const [covidData, setCovidData] = useState({});
+  const [covidData, setCovidData] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
@@ -36,9 +36,7 @@ const App = () => {
       <Container>
         <Row>
           <Col md={6} xs={12}>
-            {covidData.length > 0 ? null : (
-              <ChartWrapper data={covidData.Ireland} />
-            )}
+            {covidData ? <ChartWrapper data={covidData.Ireland} /> : null}
           </Col>
           <Col md={6} xs={12}></Col>
         </Row>
