@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 
-
 import Navbar from "react-bootstrap/Navbar";
 import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
@@ -21,17 +20,14 @@ const App = () => {
       })
       .then((data) => {
         setIsLoading(false);
-        console.log(data);
         setCovidData(data);
       })
       .catch((error) => {
         setIsLoading(true);
         console.log(error);
       });
-  }, []);
+  }, [isLoading]);
 
-  const display = isLoading ? covidData.Ireland : null;
-  console.log(display)
   return (
     <div>
       <Navbar bg="light">
@@ -40,7 +36,9 @@ const App = () => {
       <Container>
         <Row>
           <Col md={6} xs={12}>
-            <ChartWrapper data = {display}/>
+            {covidData.length > 0 ? null : (
+              <ChartWrapper data={covidData.Ireland} />
+            )}
           </Col>
           <Col md={6} xs={12}></Col>
         </Row>
