@@ -37,8 +37,8 @@ const App = () => {
       </Navbar>
       <Container>
         <Row>
-          <Col md={8} xs={12}>
-            {covidData ? <ChartWrapper data={covidData.Spain} /> : null}
+          <Col md={12} xs={12}>
+            {covidData ? <ChartWrapper data={covidData["United Kingdom"]} /> : null}
           </Col>
           <Col md={4} xs={12}></Col>
         </Row>
