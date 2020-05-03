@@ -16,6 +16,7 @@ const App = () => {
     axios
       .get("https://pomber.github.io/covid19/timeseries.json")
       .then((res) => {
+        console.log(res.data)
         return res.data;
       })
       .then((data) => {
@@ -28,6 +29,7 @@ const App = () => {
       });
   }, [isLoading]);
 
+
   return (
     <div>
       <Navbar bg="light">
@@ -35,10 +37,10 @@ const App = () => {
       </Navbar>
       <Container>
         <Row>
-          <Col md={6} xs={12}>
-            {covidData ? <ChartWrapper data={covidData.Ireland} /> : null}
+          <Col md={8} xs={12}>
+            {covidData ? <ChartWrapper data={covidData.Spain} /> : null}
           </Col>
-          <Col md={6} xs={12}></Col>
+          <Col md={4} xs={12}></Col>
         </Row>
       </Container>
     </div>
