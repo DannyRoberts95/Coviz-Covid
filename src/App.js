@@ -1,12 +1,6 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-
-import Navbar from "react-bootstrap/Navbar";
-import Container from "react-bootstrap/Container";
-import Row from "react-bootstrap/Row";
-import Col from "react-bootstrap/Col";
-
-import ChartWrapper from "./ChartWrapper";
+import Dashboard from "./Dashboard";
 
 const App = () => {
   const [covidData, setCovidData] = useState(null);
@@ -16,7 +10,7 @@ const App = () => {
     axios
       .get("https://pomber.github.io/covid19/timeseries.json")
       .then((res) => {
-        console.log(res.data)
+        console.log(res.data);
         return res.data;
       })
       .then((data) => {
@@ -29,22 +23,7 @@ const App = () => {
       });
   }, [isLoading]);
 
-
-  return (
-    <div>
-      <Navbar bg="light">
-        <Navbar.Brand>Covid Viz</Navbar.Brand>
-      </Navbar>
-      <Container>
-        <Row>
-          <Col md={12} xs={12}>
-            {covidData ? <ChartWrapper data={covidData["United Kingdom"]} /> : null}
-          </Col>
-          <Col md={4} xs={12}></Col>
-        </Row>
-      </Container>
-    </div>
-  );
+  return <Dashboard data={covidData}></Dashboard>;
 };
 
 export default App;
