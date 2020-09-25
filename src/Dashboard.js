@@ -1,4 +1,5 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
+import axios from "axios";
 import clsx from "clsx";
 import { makeStyles } from "@material-ui/core/styles";
 import CssBaseline from "@material-ui/core/CssBaseline";
@@ -19,7 +20,10 @@ import MenuIcon from "@material-ui/icons/Menu";
 import ChevronLeftIcon from "@material-ui/icons/ChevronLeft";
 import NotificationsIcon from "@material-ui/icons/Notifications";
 import { mainListItems, secondaryListItems } from "./listItems";
+
 import Chart from "./Chart";
+import GoogleChart from "./GoogleChart";
+import GoogleGeoChart from "./GoogleGeoChart";
 
 function Copyright() {
   return (
@@ -101,11 +105,10 @@ const useStyles = makeStyles((theme) => ({
     overflow: "auto",
   },
   container: {
-    paddingTop: theme.spacing(4),
-    paddingBottom: theme.spacing(4),
+    padding: theme.spacing(2),
   },
   paper: {
-    padding: theme.spacing(2),
+    // padding: theme.spacing(2),
     display: "flex",
     overflow: "auto",
     flexDirection: "column",
@@ -113,6 +116,23 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function Dashboard() {
+  const [covidData, setCovidData] = useState(null);
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    axios
+      .get("https://pomber.github.io/covid19/timeseries.json")
+      .then((res) => res.data)
+      .then((data) => {
+        setIsLoading(false);
+        setCovidData(data);
+      })
+      .catch((error) => {
+        setIsLoading(true);
+        console.log(error);
+      });
+  }, [isLoading]);
+
   const classes = useStyles();
   const [open, setOpen] = React.useState(true);
   const handleDrawerOpen = () => {
@@ -121,7 +141,8 @@ export default function Dashboard() {
   const handleDrawerClose = () => {
     setOpen(false);
   };
-  const fixedHeightPaper = clsx(classes.paper, classes.fixedHeight);
+
+  // console.log(covidData)
 
   return (
     <div className={classes.root}>
@@ -178,19 +199,28 @@ export default function Dashboard() {
       </Drawer>
       <main className={classes.content}>
         <div className={classes.appBarSpacer} />
-        <Container maxWidth="lg" className={classes.container}>
+        <Grid container className={classes.container}>
           <Grid container spacing={3}>
             {/* Chart */}
             <Grid item xs={12} md={12} lg={12}>
-              <Paper>
-                <Chart />
-              </Paper>
+              {covidData === null ? (
+                <div>Loading</div>
+              ) : (
+                <React.Fragment>
+                  <Paper elevation={2}>
+                    <GoogleGeoChart chartData={covidData} />
+                  </Paper>
+                  <Paper elevation={2}>
+                    <GoogleChart chartData={covidData} />
+                  </Paper>
+                </React.Fragment>
+              )}
             </Grid>
           </Grid>
           <Box pt={4}>
             <Copyright />
           </Box>
-        </Container>
+        </Grid>
       </main>
     </div>
   );
